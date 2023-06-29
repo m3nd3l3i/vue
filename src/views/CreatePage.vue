@@ -45,10 +45,8 @@ export default {
   // emits: ['pageCreated'],
   emits: {
     pageCreated({pageTitle, content, link}) {
-      if(!pageTitle || !content || !link || !link.text || !link.url) {
-        return false;
-      }
-      return true;
+      return !(!pageTitle || !content || !link || !link.text || !link.url);
+
     }
   },
   expose: ['resetForm'],
