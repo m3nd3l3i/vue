@@ -3,18 +3,22 @@ const pagesKey = 'pages';
 let pagesJson = localStorage.getItem(pagesKey);
 let pagesStore = JSON.parse(pagesJson);
 
+function save() {
+    localStorage.setItem(pagesKey, JSON.stringify(pagesStore));
+}
+
 export default {
     async loadPages() {
         if (pagesStore === null) {
             let res = await fetch('pages.json');
             pagesStore = await res.json();
-            localStorage.setItem(pagesKey, JSON.stringify(pagesStore));
+            save();
         }
     },
 
     addPage(page) {
         pagesStore.push(page);
-        localStorage.setItem(pagesKey, JSON.stringify(pagesStore));
+        save();
     },
 
     getAllPages()
@@ -36,7 +40,16 @@ export default {
         pagesStore.forEach((page, index) => {
             if(page.link.url === url) {
                 pagesStore[index] = editedPage;
-                localStorage.setItem(pagesKey, JSON.stringify(pagesStore));
+                save();
+            }
+        });
+    },
+
+    removePage(url) {
+        pagesStore.forEach((page, index) => {
+            if(page.link.url === url) {
+                pagesStore.splice(index, 1);
+                save();
             }
         });
     }

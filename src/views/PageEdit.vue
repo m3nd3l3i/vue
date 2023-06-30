@@ -17,7 +17,7 @@
       </div>
       <div class="col">
         <div class="mb-3">
-          <label for="" class="form-label">Link text</label>
+          <label for="" class="form-label">Navigation Header</label>
           <input type="text" class="form-control" v-model="page.link.text"/>
         </div>
         <div class="mb-3">
@@ -35,8 +35,9 @@
 
 
     <div class="mb-3">
+      <button class="btn btn-danger me-4" @click.prevent="deletePage">Delete</button>
       <button class="btn btn-secondary me-4" @click.prevent="gotToPagesList">Cancel</button>
-      <button class="btn btn-primary" @click.prevent="submit">Edit</button>
+      <button class="btn btn-primary" @click.prevent="submit">Save</button>
     </div>
   </form>
 
@@ -54,10 +55,7 @@
 
   let page = pages.getSinglePage(url);
 
-  console.log(page);
-  let f = 0;
-  function submit()
-  {
+  function submit() {
     pages.editPage(url, page);
 
     bus.$emit('page-updated', {
@@ -67,9 +65,17 @@
 
     gotToPagesList();
   }
-    function gotToPagesList() {
+  function gotToPagesList() {
       router.push({path: '/pages'});
     }
+
+  function deletePage() {
+    pages.removePage(url);
+
+    bus.$emit('page-deleted', { url });
+
+    gotToPagesList();
+  }
 
 
 </script>
