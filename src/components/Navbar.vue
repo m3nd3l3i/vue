@@ -6,9 +6,9 @@
       </a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <navbar-link
-                v-for="(page, index) in publishedPages" class="nav-item" :key="index"
+                v-for="(page) in publishedPages" class="nav-item" :key="page.link.url"
                 :page="page"
-                :index="index"
+                :url="page.link.url"
             ></navbar-link>
 
         <li>
@@ -31,10 +31,10 @@
 <script>
 import NavbarLink from "@/components/NavbarLink.vue";
 export default {
-  inject: ['$pages', '$bus'],
   components: {
     NavbarLink
   },
+  inject: ['$pages', '$bus'],
   created() {
     this.getThemeSettings();
 
@@ -43,11 +43,15 @@ export default {
     this.$bus.$on('page-updated', () => {
       this.pages = [...this.$pages.getAllPages()];
     });
+
+    this.$bus.$on('page-created', () => {
+      this.pages = [...this.$pages.getAllPages()];
+    });
   },
   computed: {
     publishedPages() {
       return this.pages.filter(p => p.published);
-    }
+    },
   },
   data() {
     return {

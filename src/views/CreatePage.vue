@@ -17,7 +17,7 @@
           <input type="text" class="form-control" v-model="linkText"/>
         </div>
         <div class="mb-3">
-          <label for="" class="form-label">Link URL</label>
+          <label for="" class="form-label">URL Link txt</label>
           <input type="text" class="form-control" v-model="linkURL"/>
         </div>
         <div class="row-mb-3">
@@ -28,74 +28,55 @@
         </div>
       </div>
     </div>
-
-
       <div class="mb-3">
         <button
             class="btn btn-primary"
             @click.prevent="submitForm"
-            :disabled="isFormInvalid"
         >Create Page</button>
       </div>
     </form>
 </template>
+<script setup>
+  import {inject, ref, computed, watch} from "vue";
+  import { useRouter } from "vue-router";
 
-<script>
-export default {
-  // emits: ['pageCreated'],
-  emits: {
-    pageCreated({pageTitle, content, link}) {
-      return !(!pageTitle || !content || !link || !link.text || !link.url);
+  const bus = inject('$bus');
+  const pages = inject('$pages');
+  const router = useRouter();
 
+  let pageTitle = ref('');
+  let content = ref('');
+  let linkText = ref('');
+  let linkURL = ref('');
+  let published = ref('true');
+
+  function submitForm() {
+    if (!pageTitle.value || !content.value|| !linkText.value || !linkURL.value) {
+      alert('Something is missing');
+      return;
     }
-  },
-  expose: ['resetForm'],
-  computed: {
-    isFormInvalid() {
-        return (!this.pageTitle || !this.content || !this.linkText || !this.linkURL);
-    }
-  },
-    data() {
-      return {
-         pageTitle: '',
-         content: '',
-         linkText: '',
-         linkURL: '',
-         published: true
-      }
-    },
-    methods: {
-      resetForm(){
-        this.content = '';
-        this.pageTitle = '';
-        this.linkText = '';
-        this.linkURL = '';
-      },
-      submitForm() {
-        if (!this.pageTitle || !this.content || !this.linkText || !this.linkURL) {
-          alert('Something is missing');
-          return;
-        }
 
-        this.$emit('pageCreated',{
-          pageTitle: this.pageTitle,
-          content: this.content,
-          link: {
-             text: this.linkText,
-             url: this.linkURL
-          },
-          published: this.published
+    let newPage = {
+        pageTitle: pageTitle.value,
+        content: content.value,
+        link: {
+          text: linkText.value,
+          url: linkURL.value
         },
-            setTimeout(() => this.resetForm(), 500)
-        );
-      }
-    },
-    watch: {
-      pageTitle(newTitle, oldTitle) {
-        if (this.linkText === oldTitle) {
-          this.linkText = newTitle;
-        }
-      }
-    }
+        published:published.value
+    };
+
+    pages.addPage(newPage);
+
+    bus.$emit('page-created',newPage);
+
+    router.push({path: '/pages'});
   }
+
+  watch(pageTitle,(newTitle, oldTitle) => {
+    if (linkText.value === oldTitle) {
+      linkText.value = newTitle;
+    }
+  });
+
 </script>

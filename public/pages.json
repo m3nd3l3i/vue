@@ -1,17 +1,17 @@
 [{
-    "link": {"text": "Home", "url": "index.html"},
+    "link": {"text": "Home", "url": "index"},
     "pageTitle": "Home Page",
     "content": "This is the home content",
     "published": true
   },
   {
-    "link": {"text": "About", "url": "about.html"},
+    "link": {"text": "About", "url": "about"},
     "pageTitle": "About Page",
     "content": "This is the about content",
     "published": true
   },
   {
-    "link": {"text": "Contacts", "url": "contacts.html"},
+    "link": {"text": "Contacts", "url": "contacts"},
     "pageTitle": "Contacts Page",
     "content": "This is the contacts content",
     "published": false

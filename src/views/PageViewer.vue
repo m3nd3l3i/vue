@@ -7,10 +7,10 @@
 
 <script>
 export default {
-  props: ['index'],
+  props: ['url'],
   inject: ['$pages'],
   created(){
-      this.page =this.$pages.getSinglePage(this.index);
+      this.page = this.$pages.getSinglePage(this.url);
     },
   data() {
     return {
@@ -18,8 +18,8 @@ export default {
     }
   },
   watch: {
-    index(newIndex, oldIndex) {
-      this.page = this.$pages.getSinglePage(newIndex);
+    url(newUrl, oldUrl) {
+      this.page = this.$pages.getSinglePage(newUrl);
     }
   }
 }

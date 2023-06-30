@@ -1,7 +1,7 @@
 <template>
   <li>
     <router-link
-        :to="`/${index}`"
+        :to="`/${url}`"
         class="nav-link"
         active-class="active"
         aria-current="page"
@@ -12,6 +12,6 @@
 </template>
 <script>
   export default {
-    props: ['page', 'index']
+    props: ['page', 'url']
   }
 </script>

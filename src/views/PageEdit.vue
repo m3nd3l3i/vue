@@ -20,6 +20,10 @@
           <label for="" class="form-label">Link text</label>
           <input type="text" class="form-control" v-model="page.link.text"/>
         </div>
+        <div class="mb-3">
+          <label for="" class="form-label">Link URL</label>
+          <input type="text" class="form-control" v-model="page.link.url"/>
+        </div>
         <div class="row-mb-3">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" v-model="page.published">
@@ -31,8 +35,8 @@
 
 
     <div class="mb-3">
-      <button class="btn btn-primary me-2" @click.prevent="submit">Edit</button>
-      <button class="btn btn-secondary">Cancel</button>
+      <button class="btn btn-secondary me-4" @click.prevent="gotToPagesList">Cancel</button>
+      <button class="btn btn-primary" @click.prevent="submit">Edit</button>
     </div>
   </form>
 
@@ -46,17 +50,26 @@
   const pages = inject('$pages');
   const bus = inject('$bus');
 
-  const {index} = defineProps(['index']);
+  const {url} = defineProps(['url']);
 
-  let page = pages.getSinglePage(index);
+  let page = pages.getSinglePage(url);
 
-  function submit() {
-    pages.editPage(index, page);
+  console.log(page);
+  let f = 0;
+  function submit()
+  {
+    pages.editPage(url, page);
 
     bus.$emit('page-updated', {
-      index,
+      url,
       page
     });
+
+    gotToPagesList();
   }
+    function gotToPagesList() {
+      router.push({path: '/pages'});
+    }
+
 
 </script>
